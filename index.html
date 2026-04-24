@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Corte de Valor | Premium</title>
+    <style>
+        :root {
+            --bg-dark: #020617; 
+            --card-navy: #0f172a; 
+            --gold: #c5a059; 
+            --gold-dark: #927438;
+            --white: #ffffff;
+            --income: #fbbf24; 
+            --expense: #ef4444; 
+            --border: rgba(197, 160, 89, 0.3);
+            --mp-blue: #009ee3; /* Cor oficial Mercado Pago para o botão */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background: radial-gradient(circle at top, #0f172a 0%, #020617 100%);
+            color: var(--white);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 450px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 2px solid var(--gold);
+            margin-bottom: 10px;
+            box-shadow: 0 0 20px rgba(197, 160, 89, 0.2);
+            object-fit: cover;
+        }
+
+        header h1 {
+            font-size: 1.5rem;
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 800;
+        }
+
+        /* Dashboard */
+        .balance-card {
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+            color: #000;
+            padding: 25px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            margin-bottom: 20px;
+        }
+
+        .balance-card h2 { font-size: 0.8rem; text-transform: uppercase; opacity: 0.8; margin-bottom: 5px; }
+        .balance-card #balance { font-size: 2.2rem; font-weight: 800; }
+
+        .inc-exp-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: var(--card-navy);
+            padding: 15px;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid var(--border);
+        }
+
+        .stat-card h4 { font-size: 0.7rem; text-transform: uppercase; color: var(--gold); margin-bottom: 5px; }
+        .money { font-weight: 700; font-size: 1.1rem; }
+        .plus { color: var(--income); }
+        .minus { color: var(--expense); }
+
+        /* Formulários e Cards */
+        .card-box {
+            background: var(--card-navy);
+            padding: 20px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            margin-bottom: 25px;
+        }
+
+        h3 { font-size: 1rem; margin-bottom: 15px; color: var(--gold); text-transform: uppercase; }
+
+        .form-control { margin-bottom: 12px; }
+        label { display: block; font-size: 0.8rem; margin-bottom: 5px; color: #94a3b8; }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #334155;
+            border-radius: 10px;
+            background: #1e293b;
+            color: white;
+            outline: none;
+        }
+
+        .btn-main {
+            width: 100%;
+            padding: 14px;
+            background: var(--gold);
+            color: #000;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        /* SEÇÃO DE APOIO (CTA) */
+        .support-card {
+            text-align: center;
+            background: rgba(197, 160, 89, 0.05); /* Fundo sutil dourado */
+        }
+
+        .support-card p {
+            font-size: 0.85rem;
+            color: var(--white);
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        .btn-support {
+            display: inline-block;
+            width: 100%;
+            padding: 14px;
+            background: var(--mp-blue);
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: transform 0.2s, background 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 158, 227, 0.3);
+        }
+
+        .btn-support:hover {
+            background: #0087c2;
+            transform: translateY(-2px);
+        }
+
+        /* Lista Histórico */
+        .list { list-style: none; margin-bottom: 30px; }
+        .list li {
+            background: var(--card-navy);
+            display: flex;
+            justify-content: space-between;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            border-left: 4px solid #334155;
+        }
+        .list li.plus { border-left-color: var(--gold); }
+        .list li.minus { border-left-color: var(--expense); }
+
+        .delete-btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 2px 8px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        @media (max-width: 480px) { .container { padding: 0 5px; } }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <img src="Corte de Valor.jpg" alt="Logo Corte de Valor" class="logo-img" onerror="this.style.display='none'">
+            <h1>Corte de Valor</h1>
+        </header>
+
+        <div class="balance-card">
+            <h2>Saldo Disponível</h2>
+            <h1 id="balance">R$ 0,00</h1>
+        </div>
+
+        <div class="inc-exp-container">
+            <div class="stat-card">
+                <h4>Entradas</h4>
+                <p id="money-plus" class="money plus">+ R$ 0,00</p>
+            </div>
+            <div class="stat-card">
+                <h4>Saídas</h4>
+                <p id="money-minus" class="money minus">- R$ 0,00</p>
+            </div>
+        </div>
+
+        <div class="card-box">
+            <h3>Novo Lançamento</h3>
+            <form id="form">
+                <div class="form-control">
+                    <label>Descrição</label>
+                    <input type="text" id="text" placeholder="Ex: Investimento, Aluguel..." required />
+                </div>
+                <div class="form-control">
+                    <label>Valor (R$)</label>
+                    <input type="number" step="0.01" id="amount" placeholder="0.00" required />
+                </div>
+                <div class="form-control">
+                    <label>Tipo</label>
+                    <select id="type">
+                        <option value="income">Receita</option>
+                        <option value="expense">Despesa</option>
+                    </select>
+                </div>
+                <button class="btn-main">ADICIONAR AO FLUXO</button>
+            </form>
+        </div>
+
+        <div class="card-box support-card">
+            <h3>Apoie o Projeto</h3>
+            <p>Gostou do <strong>Corte de Valor</strong>? Ajude-nos a manter esta ferramenta gratuita e evoluir o projeto com sua contribuição.</p>
+            <a href="https://mpago.la/2VNDEM2" target="_blank" class="btn-support">
+                APOIAR VIA MERCADO PAGO
+            </a>
+        </div>
+
+        <h3>Histórico Recente</h3>
+        <ul id="list" class="list"></ul>
+    </div>
+
+    <script>
+        const balance = document.getElementById('balance');
+        const money_plus = document.getElementById('money-plus');
+        const money_minus = document.getElementById('money-minus');
+        const list = document.getElementById('list');
+        const form = document.getElementById('form');
+        const text = document.getElementById('text');
+        const amount = document.getElementById('amount');
+        const type = document.getElementById('type');
+
+        const getLocal = JSON.parse(localStorage.getItem('corte_valor_data'));
+        let transactions = localStorage.getItem('corte_valor_data') !== null ? getLocal : [];
+
+        function updateValues() {
+            const amounts = transactions.map(t => t.amount);
+            const total = amounts.reduce((acc, item) => (acc += item), 0).toFixed(2);
+            const income = amounts.filter(item => item > 0).reduce((acc, item) => (acc += item), 0).toFixed(2);
+            const expense = (amounts.filter(item => item < 0).reduce((acc, item) => (acc += item), 0) * -1).toFixed(2);
+
+            balance.innerText = `R$ ${parseFloat(total).toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
+            money_plus.innerText = `+ R$ ${parseFloat(income).toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
+            money_minus.innerText = `- R$ ${parseFloat(expense).toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
+        }
+
+        function addTransaction(e) {
+            e.preventDefault();
+            const val = type.value === 'expense' ? -Math.abs(amount.value) : Math.abs(amount.value);
+            const transaction = { id: Math.floor(Math.random() * 1000000), text: text.value, amount: +val };
+            transactions.push(transaction);
+            addTransactionDOM(transaction);
+            updateValues();
+            updateLocalStorage();
+            text.value = ''; amount.value = '';
+        }
+
+        function addTransactionDOM(t) {
+            const sign = t.amount < 0 ? '-' : '+';
+            const item = document.createElement('li');
+            item.classList.add(t.amount < 0 ? 'minus' : 'plus');
+            item.innerHTML = `
+                ${t.text} <span>${sign} R$ ${Math.abs(t.amount).toLocaleString('pt-BR', {minimumFractionDigits: 2})}</span>
+                <button class="delete-btn" onclick="removeTransaction(${t.id})">x</button>
+            `;
+            list.appendChild(item);
+        }
+
+        function removeTransaction(id) {
+            transactions = transactions.filter(t => t.id !== id);
+            updateLocalStorage();
+            init();
+        }
+
+        function updateLocalStorage() { localStorage.setItem('corte_valor_data', JSON.stringify(transactions)); }
+
+        function init() {
+            list.innerHTML = '';
+            transactions.forEach(addTransactionDOM);
+            updateValues();
+        }
+
+        init();
+        form.addEventListener('submit', addTransaction);
+    </script>
+</body>
+</html>
